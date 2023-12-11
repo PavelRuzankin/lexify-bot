@@ -10,7 +10,7 @@
     "build:js": "node ./dist/index.js",
     "build:ts": "tsc",
     "start": "cross-env NODE_ENV=development concurrently npm:start:* ",
-    "build": "cross-env NODE_ENV=production concurrently npm:build:*"
+    "build": "cross-env NODE_ENV=production npm run build:ts && npm run build:js"
   },
   "author": "",
   "license": "ISC",
