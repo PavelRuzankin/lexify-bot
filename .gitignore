@@ -1,7 +1,6 @@
 /dist
 /node_modules
 /config
-/voices
 session.json
 .idea
 .vscode
