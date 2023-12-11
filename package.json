@@ -1,0 +1,36 @@
+{
+  "name": "lang-copilot-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start:ts": "tsc --w",
+    "start:js": "nodemon ./dist/index.js nodemon --ignore sessions.json",
+    "build:js": "node ./dist/index.js",
+    "build:ts": "tsc",
+    "start": "cross-env NODE_ENV=development concurrently npm:start:* ",
+    "build": "cross-env NODE_ENV=production concurrently npm:build:*"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "axios": "^1.6.2",
+    "config": "^3.3.9",
+    "fluent-ffmpeg": "^2.1.2",
+    "openai": "^4.20.0",
+    "telegraf": "^4.15.0"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/config": "^3.3.3",
+    "@types/fluent-ffmpeg": "^2.1.24",
+    "@types/node": "^20.9.0",
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  }
+}
