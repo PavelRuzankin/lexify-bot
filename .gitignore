@@ -1,6 +1,6 @@
 /dist
 /node_modules
 /config
-session.json
+sessions.json
 .idea
 .vscode
