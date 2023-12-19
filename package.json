@@ -9,8 +9,8 @@
     "start:js": "nodemon ./dist/index.js nodemon --ignore sessions.json",
     "build:js": "node ./dist/index.js",
     "build:ts": "tsc",
-    "start": "cross-env NODE_ENV=development concurrently npm:start:* ",
-    "build": "cross-env NODE_ENV=production npm run build:ts && npm run build:js"
+    "start": "concurrently npm:start:* ",
+    "build": "npm run build:ts && npm run build:js"
   },
   "author": "",
   "license": "ISC",
