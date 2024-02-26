@@ -1,12 +1,12 @@
 {
-  "name": "lang-copilot-bot",
+  "name": "lexify-bot",
   "version": "1.0.0",
   "description": "",
   "main": "./dist/index.js",
   "type": "commonjs",
   "scripts": {
     "start:ts": "tsc --w",
-    "start:js": "nodemon ./dist/index.js nodemon --ignore sessions.json",
+    "start:js": "nodemon ./dist/index.js nodemon",
     "build:js": "node ./dist/index.js",
     "build:ts": "tsc",
     "start": "concurrently npm:start:* ",
@@ -20,7 +20,11 @@
     "config": "^3.3.9",
     "fluent-ffmpeg": "^2.1.2",
     "openai": "^4.20.0",
-    "telegraf": "^4.15.0"
+    "pg": "^8.11.3",
+    "reflect-metadata": "^0.2.1",
+    "telegraf": "^4.15.0",
+    "typeorm": "^0.3.19",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",

@@ -1,28 +1,51 @@
-import { ChattingType } from '../types';
-import { SessionData, Storage } from './types';
+import { Repository } from 'typeorm';
+import { BaseSessionEntity } from './types';
 
-export class Session {
-  userId: string
-  chattingType: ChattingType
+export class Session<Entity extends BaseSessionEntity> {
+  private _data: Entity | null = null
 
-  private _storage: Storage
+  constructor(
+    readonly userId: string,
+    private readonly _repository: Repository<Entity>,
+    private readonly _entityCreator: () => Entity
+  ) {}
 
-  constructor(data: SessionData, storage: Storage) {
-    this.userId = data.userId;
-    this.chattingType = data.chattingType
-
-    this._storage = storage
+  get data(): Entity | null {
+    return this._data
   }
 
-  async setChattingType(chattingType: ChattingType): Promise<void> {
-    this.chattingType = chattingType
-    this._saveData()
-  }
-
-  private async _saveData(): Promise<void> {
-    await this._storage.set({ 
-      userId: this.userId, 
-      chattingType: this.chattingType
+  async init(): Promise<Session<Entity>> {
+    // @ts-ignore
+    let data = await this._repository.findOneBy({ 
+      userId: this.userId
     })
+
+    if(!data) {
+      data = this._entityCreator()
+      data.userId = this.userId
+    }
+
+    this._data = data
+
+    return this
+  }
+
+  setData(data: Partial<Entity>): Promise<Session<Entity>>  {
+    if(this._data) {
+      this._data = Object.assign(this._data, data)
+    }
+    return this._save()
+  } 
+
+  private async _save(): Promise<Session<Entity>> {
+    try {
+      if(this._data) {
+        await this._repository.save(this._data)
+      }
+    } catch(error) {
+      console.error('Error while saving session', error)
+    }
+
+    return this
   }
 }

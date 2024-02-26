@@ -4,7 +4,7 @@ import installer from '@ffmpeg-installer/ffmpeg'
 import { createWriteStream } from 'fs'
 import { dirname, resolve } from 'path'
 
-export class AudioConvertor {
+export default class AudioConvertor {
   constructor() {
     Ffmpeg.setFfmpegPath(installer.path)
   }
@@ -53,5 +53,3 @@ export class AudioConvertor {
     }
   }
 }
-
-export const audioConvertor = new AudioConvertor()

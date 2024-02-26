@@ -1,20 +1,28 @@
-import { setupSession } from './session';
-import { setupChat } from './chat';
 import { telegraf } from './telegraf';
-import { setupCommands } from './commands';
-import { compose } from './compose';
-import { setupActions } from './actions';
+import { compose } from './utils/compose';
+import { initDataSource } from './data-source';
+import { setupChatActions } from './chat-actions';
+import { setupScenarios } from './scenarios';
+import { setupSettings } from './userSettings';
 
-export const start = () => {
+export const start = async () => {
+  let startTry = 1
+
   try {
+    const dataSource = await initDataSource()
+  
+    if(!dataSource) return
+    
     compose(
-      setupChat,
-      setupCommands,
-      setupActions,
-      setupSession, 
+      setupSettings,
+      setupChatActions,
+      setupScenarios,
     )(telegraf);
-  } catch(err) {
-    console.error(err)
-    start()
+  } catch(error) {
+    console.error(`Error while starting. Try ${startTry}`, error)
+
+    if(startTry <= 3) {
+      start()
+    }
   }
 }

@@ -1,21 +1,22 @@
-import process from 'process'
-import { CurrentSessions } from './current-sessions'
-import { Bot, ChattingType } from '../types'
-import { JsonStorage } from './json-storage'
+import { Repository } from 'typeorm'
+import SessionStore from './session-store'
+import { BaseSessionEntity } from './types'
+import { Context, Telegraf } from 'telegraf'
+import { Session } from './session'
 
-const getPathname = () => `${process.cwd()}/sessions.json`
+type SetupSessionBot<Entity extends BaseSessionEntity> = Telegraf<
+  { session: Session<Entity> } & Context
+>
 
-export const setupSession = (bot: Bot) => {
-  const currentSessions = new CurrentSessions(
-    { chattingType: ChattingType.TEXT },
-    new JsonStorage(getPathname())
-  )
+export const setupSession = <Entity extends BaseSessionEntity>(
+  repository: Repository<Entity>,
+  entityCreator: () => Entity
+) => (bot: SetupSessionBot<Entity>): SetupSessionBot<Entity> => {
+  const sessions = new SessionStore<Entity>(repository, entityCreator)
 
   bot.use(async (context, next) => {
-    if(!context.session) {
-      const userId = String(context.from?.id)
-      context.session = await currentSessions.getSession(userId)
-    }
+    context.session = await sessions.getSession(String(context.from?.id))
+
     next()
   })
   return bot
