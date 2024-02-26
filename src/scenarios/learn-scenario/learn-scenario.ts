@@ -125,6 +125,7 @@ export default class LearnScenario implements Scenario {
     const words = this._selectedDictionary.words.map(({ value }) => value)
 
     const response = await this._assistant.fetch({
+      level: this._level,
       count: this._count,
       words: words
     })
